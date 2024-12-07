@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    background: 
+        url('static\images\home.jpg') no-repeat center center fixed, 
+        linear-gradient(135deg, #6a11cb, #2575fc);
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+
+.container {
+    margin-top: 100px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.option {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    width: 200px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.option a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.option:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.option i {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.option h2 {
+    font-size: 1.5rem;
+    margin: 0;
+}

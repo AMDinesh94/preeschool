@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* General Styling */
+.messages-heading {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    margin: 20px 0;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Container for all messages */
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Each message card */
+.message-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover effect on each message card */
+.message-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Message header (sender and date) */
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Sender styling */
+.sender {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #2a2a2a;
+}
+
+/* Message date styling */
+.message-date {
+    font-size: 0.9em;
+    color: #888;
+}
+
+/* Message content */
+.message-content {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* Alternate message colors (even and odd messages) */
+.messages-container .message-card:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Message card on hover */
+.message-card:hover {
+    cursor: pointer;
+}
+
+</style>
+<h3 class="messages-heading">Your Messages</h3>
+
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="message-card">
+        <div class="message-header">
+            <strong class="sender">{{ message['sender_username'] }}</strong>
+            <span class="message-date">{{ message['date_sent'] }}</span>
+        </div>
+        <p class="message-content">{{ message['message'] }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* General layout */
+    .dashboard-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Scrollable message container */
+    .message-container {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        background-color: #fafafa;
+    }
+
+    .message-item {
+        margin-bottom: 15px;
+    }
+
+    .message-item strong {
+        font-weight: bold;
+    }
+
+    /* Floating button for New Message */
+    .new-message-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1.5em;
+        padding: 15px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+    .new-message-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none; 
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        padding-top: 60px;
+    }
+
+    /* Modal content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 8px;
+    }
+
+    /* Close button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .form-input {
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    width: 100%;  /* Full width */
+    max-width: 600px;  /* Optional max width */
+}
+
+/* Mobile responsiveness: make the text area 100% width on smaller screens */
+@media (max-width: 768px) {
+    .form-input {
+        width: 100%;
+    }
+}
+
+</style>
+
+<div class="dashboard-container">
+    <h2>Previous Messages</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="alert-container">
+            {% for category, message in messages %}
+                {% if category == 'messages' %}
+                    <div class="alert alert-info">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+  
+    <div class="message-container">
+        {% for message in messages %}
+            <div class="message-item">
+                <strong>{{ message.sender_username }}</strong>: {{ message.message }} 
+                <br><small>{{ message.date_sent }}</small>
+            </div>
+        {% else %}
+            <div>No messages sent yet.</div>
+        {% endfor %}
+    </div>
+
+    <!-- Floating New Message Button -->
+    <button class="new-message-btn" id="newMessageBtn">
+        ✉️
+    </button>
+</div>
+
+<!-- Modal for Sending New Message -->
+<div id="newMessageModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>New Message</h2>
+        <form method="POST" action="{{ url_for('send_message') }}">
+            <div class="form-group">
+                <label for="message" class="form-label"></label>
+                <textarea name="message" id="message" rows="6" class="form-input" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Get the modal and button elements
+    var modal = document.getElementById("newMessageModal");
+    var btn = document.getElementById("newMessageBtn");
+    var closeBtn = document.getElementById("closeModal");
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}
